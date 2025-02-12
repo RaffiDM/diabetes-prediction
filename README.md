@@ -29,7 +29,7 @@ Deteksi dini diabetes sangat penting untuk mencegah komplikasi serius seperti pe
     - Standardisasi fitur menggunakan StandardScaler
 
 ## Data Understanding
-Dataset yang digunakan adalah Pima Indians Diabetes Dataset yang berisi informasi medis dari pasien wanita dengan keturunan Indian Pima. Dataset ini terdiri dari 768 sampel dengan 8 fitur dan 1 target variable. [Diabetes Dataset](https://www.kaggle.com/datasets/akshaydattatraykhare/diabetes-dataset/data)
+Dataset yang digunakan adalah Pima Indians Diabetes Dataset yang berisi informasi medis dari pasien wanita dengan keturunan Indian Pima. Dataset ini terdiri dari 768 sampel dengan 9 kolom. [Diabetes Dataset](https://www.kaggle.com/datasets/akshaydattatraykhare/diabetes-dataset/data)
 
 ### Variabel-variabel pada diabetes dataset adalah sebagai berikut:
 - Pregnancies: Untuk menyatakan jumlah kehamilan
@@ -38,12 +38,14 @@ Dataset yang digunakan adalah Pima Indians Diabetes Dataset yang berisi informas
 - SkinThickness: Untuk mengekspresikan ketebalan kulit
 - Insulin: Untuk mengekspresikan tingkat Insulin dalam darah
 - BMI: Untuk mengekspresikan indeks masa tubuh
-
 - DiabetesPedigreeFunction: untuk mengungkapkan persentase Diabetes
-
 - Age: Untuk mengekspresikan usia
-
 - Outcome: Untuk menyatakan hasil akhir 1 adalah Ya dan 0 adalah Tidak
+
+**Kondisi Data**:
+- Tidak ditemukan adanya missing value pada dataset
+- Tidak ditemukan adanya duplikat value pada dataset
+- Terdapat nilai minimum yang tidak masuk akal (0) pada fitur 'Glucose', 'BloodPresure', 'SkinThickness', 'Insulin', dan 'BMI'
 
 **Exploratory Data Analysis (EDA)**:
 1. Analisis Distribusi Diabetes Outcome:
@@ -84,22 +86,38 @@ Beberapa teknik data preparation yang diterapkan:
     - Menggunakan StandardScaler untuk menormalkan skala fitur
     
 ## Modeling
-Dalam proyek ini, menggunakan algoritma Random Forest Classifier dengan teknik Grid Search CV untuk optimasi hyperparameter. Random Forest dipilih karena:
-- Mampu menangani data numerik dengan baik
-- Dapat menangani hubungan non-linear antara fitur
-- Mengurangi risiko overfitting
+Dalam proyek ini, digunakan algoritma Random Forest Classifier dengan teknik Grid Search CV untuk optimasi hyperparameter.
 
+### Cara Kerja Random Forest Classifier
+Random Forest adalah algoritma ensemble learning yang bekerja dengan cara:
+1. Bootstrap Aggregating (Bagging):
+    - Membuat multiple decision tree dengan mengambil sampel data secara random dengan pengembalian
+    - Setiap tree mendapatkan subset data yang berbeda
+
+2. Random Feature Selection:
+    - Pada setiap split node, algoritma hanya mempertimbangkan subset random dari fitur Hal ini meningkatkan keragaman antar tree
+
+3. Voting Mechanism:
+    - Setiap tree memberikan prediksi
+    - Hasil akhir ditentukan berdasarkan majority voting dari seluruh tree
+
+Random Forest dipilih karena:
+1. Mampu menangani data numerik dengan baik
+2. Dapat menangani hubungan non-linear antara fitur
+3. Mengurangi risiko overfitting melalui ensemble multiple trees
+
+### Hyperparameter Tuning
 Hyperparameter yang dioptimasi:
-- n_estimators: [50, 100, 200]
-- max_depth: [None, 10, 20, 30]
-- min_samples_split: [2, 5, 10]
-- min_samples_leaf: [1, 2, 4]
+- n_estimators: [50, 100, 200] - Jumlah decision tree dalam forest
+- max_depth: [None, 10, 20, 30] - Kedalaman maksimum setiap tree
+- min_samples_split: [2, 5, 10] - Minimum sampel untuk melakukan split
+- min_samples_leaf: [1, 2, 4] - Minimum sampel pada leaf node
 
 Hasil Grid Search menghasilkan hyperparameter terbaik:
-- n_estimators: 200
-- max_depth: None
-- min_samples_split: 10
-- min_samples_leaf: 4
+- n_estimators: 200 - Menggunakan 200 decision tree untuk voting
+- max_depth: None - Tree dapat tumbuh hingga mencapai pure leaf
+- min_samples_split: 10 - Membutuhkan minimal 10 sampel untuk split
+- min_samples_leaf: 4 - Setiap leaf harus memiliki minimal 4 sampel
 
 ## Evaluation
 Model dievaluasi menggunakan beberapa metrik:
@@ -115,6 +133,29 @@ Model dievaluasi menggunakan beberapa metrik:
 4. F1-Score (0.8169):
     - Menyeimbangkan trade-off antara precision dan recall
     - Score yang cukup baik mengindikasikan model yang seimbang
+
+### Dampak terhadap Business Understanding
+1. **Problem Statement 1**: Bagaimana cara mengembangkan model machine learning yang dapat memprediksi risiko diabetes?
+    - Model Random Forest berhasil dikembangkan dengan akurasi 88.89%
+    - **Dampak**: Dapat membantu screening awal pasien dengan risiko diabetes
+
+2. **Problem Statement 2**: Apa saja faktor kesehatan yang paling berpengaruh?
+    - Random Forest memberikan feature importance yang menunjukkan kontribusi setiap parameter
+    - **Dampak**: Membantu tenaga medis fokus pada parameter yang paling relevan
+
+3. **Problem Statement 3**: Seberapa akurat model membedakan risiko diabetes?
+    - Model mencapai precision 87.88% dan recall 76.32%
+    - **Dampak**: Tingkat false positive dan false negative yang relatif rendah, mengurangi risiko kesalahan diagnosis
+
+### Evaluation Solution Statement
+1. Penggunaan Random Forest dengan Grid Search CV:
+    - **Dampak**: Berhasil mengoptimalkan model mencapai akurasi tinggi (88.89%)
+    - **Hasil**: Hyperparameter optimal ditemukan untuk performa terbaik
+
+2. Preprocessing Data:
+    - **Dampak Penanganan Zero Values**: Meningkatkan kualitas data dengan tetap mempertahankan distribusi
+    - **Dampak Penghapusan Outlier**: Mengurangi noise dan meningkatkan reliabilitas model
+    - **Dampak Standardisasi**: Memastikan semua fitur berkontribusi secara proporsional
 
 Fomula metrik evaluasi
 ```Accuracy = (TP + TN) / (TP + TN + FP + FN)
