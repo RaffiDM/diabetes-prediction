@@ -129,6 +129,8 @@ F1-Score = 2 * (Precision * Recall) / (Precision + Recall)
 - FN (False Negative): Kasus diabetes yang diprediksi sebagai non-diabetes
 
 Confusson Matrix
-![Confusion Matrix](image/Confusion Matrix.png)
+<div align="center">
+  <img src="image/Confusion Matrix.png" alt="Easytour Mockup 1" style="max-width: 100%; height: auto; margin: 10px;">
+</div>
 
 
