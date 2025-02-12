@@ -130,7 +130,8 @@ F1-Score = 2 * (Precision * Recall) / (Precision + Recall)
 
 Confusson Matrix
 <div align="center">
-  <img src="image/Confussion Matrix.png" style="max-width: 100%; height: auto; margin: 10px;">
+  <img src="image/Confussion Matrix.png" style="max-width: 50%; height: auto; margin: 10px;">
 </div>
+
 
 
