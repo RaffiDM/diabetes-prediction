@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Raffi Dzaky Mahendra
+# Diabetes Prediction
 
 ## Domain Proyek
 Diabetes adalah kondisi kronis yang mempengaruhi cara tubuh memproses glukosa (gula darah). Penyakit ini telah menjadi masalah kesehatan global yang serius dengan prevalensi yang terus meningkat. Menurut World Health Organization (WHO), Pada tahun 2012 saja, diabetes menyebabkan 1,5 juta kematian. Komplikasinya dapat menyebabkan serangan jantung, stroke, kebutaan, gagal ginjal, dan amputasi anggota tubuh bagian bawah.
